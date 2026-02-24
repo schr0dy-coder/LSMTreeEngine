@@ -1,0 +1,19 @@
+# Build artifacts
+out/
+build/
+bin/
+obj/
+
+# Project specific data
+data/
+*.sst
+*.wal
+temp.sst
+temp_compact.sst
+
+# IDEs
+.vs/
+.vscode/
+*.swp
+*.user
+*.suo
