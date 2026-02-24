@@ -24,7 +24,7 @@ A high-performance, crash-safe **Log-Structured Merge-Tree (LSM-Tree)** storage 
 
 | Metric | Result |
 | :--- | :--- |
-| **Bulk Insert Throughput** | ~775 Ops/sec |
+| **Bulk Insert Throughput** | ~1400 Ops/sec |
 | **Random Read Latency** | ~0.65 ms |
 | **Read Hit Rate** | Mixed (50/50 test) |
 
