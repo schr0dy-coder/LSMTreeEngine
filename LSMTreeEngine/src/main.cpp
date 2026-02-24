@@ -9,14 +9,10 @@
 using namespace std;
 
 void runBenchmark() {
-    // Clean up existing data
     std::filesystem::remove_all("data");
     
     // Use a larger MemTable limit for the benchmark to reduce flush frequency
     LSMEngine engine("data");
-    // We can't easily change the private member, so we'll work with the 100 byte limit for now
-    // or manually edit the LSMEngine.h if needed. 
-    // Let's stick with current settings to see "real" interleaved performance.
 
     const int numInserts = 2000;
     cout << "--- Starting Benchmark (" << numInserts << " inserts) ---\n";
@@ -33,7 +29,6 @@ void runBenchmark() {
     cout << "Bulk Insert Throughput: " << std::fixed << std::setprecision(2) 
          << (numInserts / diff.count()) << " Ops/sec\n";
 
-    // Random Reads
     cout << "\n--- Starting Random Read Latency Test (100 reads) ---\n";
     std::mt19937 rng(42);
     std::uniform_int_distribution<int> dist(0, numInserts * 2); // 50% hits, 50% misses

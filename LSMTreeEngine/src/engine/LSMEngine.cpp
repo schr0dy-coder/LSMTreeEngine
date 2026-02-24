@@ -12,14 +12,11 @@ LSMEngine::LSMEngine(const string& dir) : dataDir(dir)
 	filesystem::create_directories(dataDir);
 	wal = make_unique<WAL>(dataDir + "/wal.log");
 
-	cout << "Discovering SSTables...\n";
 	discoverSSTables();
 
-	cout << "Replaying WAL...\n";
 	wal->replay([this](const string& key, const string& value) {
 		memTable.put(key, value);
 		});
-	cout << "Recovery Complete. Memtable size: " << memTable.size() << '\n';
 }
 
 void LSMEngine::discoverSSTables() {
@@ -51,8 +48,6 @@ void LSMEngine::discoverSSTables() {
 			sstableFilters[p.second].add(k);
 		}
 	}
-
-	cout << "Discovered " << sstableFiles.size() << " SSTables. Latest generation: " << sstableCounter << "\n";
 }
 void LSMEngine::put(const string& key, const string& value) {
 	wal->append(key, string(value));
@@ -141,8 +136,6 @@ void LSMEngine::flushMemTable() {
 void LSMEngine::compact() {
 	if (sstableFiles.empty()) return;
 
-	cout << "Starting Major Compaction...\n";
-
 	map<string, string> mergedData;
 	// Iterate chronological (oldest to newest) so newer entries naturally overwrite older ones in the map
 	for (const auto& file : sstableFiles) {
@@ -164,7 +157,6 @@ void LSMEngine::compact() {
 	string finalPath = ss.str();
 	string tempPath = dataDir + "\\temp_compact.sst";
 
-	cout << "Writing compacted SSTable to: " << finalPath << " (via " << tempPath << ")\n";
 	SSTable::writeToFile(tempPath, mergedData);
 	filesystem::rename(tempPath, finalPath);
 
@@ -183,6 +175,4 @@ void LSMEngine::compact() {
 	for (const auto& [k, v] : mergedData) {
 		sstableFilters[finalPath].add(k);
 	}
-
-	cout << "Compaction Complete. Reduced to 1 SSTable.\n";
 }

@@ -20,7 +20,7 @@ private:
 	string dataDir;
 	MemTable memTable;
 	unique_ptr<WAL> wal;
-	size_t memtableByteLimit = 100; // Realistic limit for testing
+	size_t memtableByteLimit = 100;
 	size_t sstableCounter = 0;
 	vector<string> sstableFiles;
 	map<string, map<string, uint64_t>> sstableIndexes;

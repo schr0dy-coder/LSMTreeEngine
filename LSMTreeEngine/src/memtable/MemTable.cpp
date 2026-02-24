@@ -5,12 +5,12 @@ void MemTable::put(const string& key, const string& value) {
 	table[key] = value;
 }
 
-bool MemTable::get(const string& key, string& value) const { // Change 'const string& value' to 'string& value'
+bool MemTable::get(const string& key, string& value) const {
 	auto it = table.find(key);
 	if (it == table.end()) {
 		return false;
 	}
-	value = it->second; // This now works because 'value' is a non-const reference
+	value = it->second;
 	return true;
 }
 
